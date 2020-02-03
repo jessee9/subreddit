@@ -10,4 +10,4 @@ A little more about testing, I typically write unit tests for isolated functiona
 
 
 ## Run
-This is based on create-react-app.  Use npm start to run!  Webpack config not ejected, and was not built for production.  
+This is based on create-react-app. Use npm i and npm start to run!  Webpack config not ejected, and was not built for production.  
