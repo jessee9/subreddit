@@ -8,14 +8,11 @@ import rootSaga from './rootSaga';
 const sagaMiddleware = createSagaMiddleware();
 // const middlewares = [sagaMiddleware, logger];  // used for debugging
 const middlewares = [sagaMiddleware]; // used for debugging
-const initialState = {};
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  applyMiddleware(...middlewares)
-);
+const store = createStore(rootReducer, {}, applyMiddleware(...middlewares));
 
 sagaMiddleware.run(rootSaga);
 
 export default store;
+
+// Inital State of the App

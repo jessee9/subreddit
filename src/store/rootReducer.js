@@ -1,6 +1,7 @@
 // Each reducer can be in it's own file and then combined,
 // for the sake of simplicity and time I've inlcude all of them here.
 import { combineReducers } from 'redux';
+import { initialState } from './initialState';
 
 import {
   POSTS_FETCH_INPROGRESS,
@@ -11,30 +12,6 @@ import {
 } from './actions';
 
 import { mergePosts } from './util';
-
-//State of the app, sliced to reddit.
-
-const initialState = {
-  searchFail: false,
-  isFetching: false,
-  name: '  ',
-  id: null,
-  nextId: null,
-  posts: []
-};
-
-/*
-  Post
-  {
-    id: data.id,
-    title: data.title,
-    author: data.author,
-    thumbnail: !data.is_self ? data.thumbnail : null,
-    created: formatDate(parseInt(data.created_utc)),
-    redditLink: data.permalink,
-    srcLink: data.url
-  }
-*/
 
 const redditReducer = (state = initialState, action) => {
   switch (action.type) {

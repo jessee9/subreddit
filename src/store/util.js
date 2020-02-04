@@ -8,8 +8,8 @@ const formatDate = s => {
 // converts reddit json datastructure into array that can be used to populate list
 export const parseSubreddit = data => {
   let posts = [];
-  let after = ''; // id of next post, used for pagination
-  let before = ''; // id of prev post, used for pagination
+  let after; // id of next post, used for pagination
+  let before; // id of prev post, used for pagination
 
   if (!!data) {
     const items = data.data && data.data.children;
