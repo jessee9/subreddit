@@ -1,34 +1,57 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import configureStore from 'redux-mock-store';
 import sinon from 'sinon';
-import { render } from '@testing-library/react';
-import App from './App';
 import API from './store/API';
 import rootSaga from './store/rootSaga';
 import rootReducer from './store/rootReducer';
+import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import App from './App';
 
-const sagaMiddleware = createSagaMiddleware();
-const mockStore = configureStore(rootReducer, {}, [sagaMiddleware]);
-const store = mockStore({});
+const renderWithRedux = Component => {
+  const sagaMiddleware = createSagaMiddleware();
+  const store = createStore(rootReducer, {}, applyMiddleware(sagaMiddleware));
 
-sagaMiddleware.run(rootSaga);
+  sagaMiddleware.run(rootSaga);
+  return [
+    {
+      ...render(<Provider store={store}>{Component}</Provider>)
+    },
+    store
+  ];
+};
 
-describe.skip('Integation Tests', () => {
+const posts = [{ id: '1' }, { id: '2' }, { id: '3' }];
+
+describe('Integation Tests', () => {
   const apiStub = sinon.stub(API, 'getPosts').returns({
-    posts: [{ id: '1' }, { id: '2' }, { id: '3' }],
+    posts: posts,
     after: '2',
     before: '1'
   });
 
-  let AppComponent = render.create(
-    <Provider store={mockStore}>
-      <App />
-    </Provider>
-  );
+  afterAll(() => {
+    apiStub.restore();
+  });
 
-  it('Searching for JUDO should return posts', () => {});
+  xit('Searching for JUDO should return posts', async () => {
+    const [{ findByTestId }, store] = renderWithRedux(<App />);
+    const input = await findByTestId('search-field');
+    const form = await findByTestId('search-form');
 
-  apiStub.restore();
+    // store.subscribe(() => {
+    //   console.log(store.getState());
+    // });
+
+    input.value = 'Judo';
+    await fireEvent.submit(form);
+
+    expect(store.getState().posts).toEqual(posts);
+  });
+  // Todo, test all scenarios of retrieving posts from reddit
+  xit('Searching for HHHHHHHHH should return an empty array', () => {});
+  xit('List infinite scroll test', () => {});
+  xit('List auto referesh test', () => {});
 });

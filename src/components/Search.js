@@ -17,15 +17,18 @@ const Search = ({ isInvalid, search }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} inline>
+    <Form data-testid="search-form" onSubmit={handleSubmit} inline>
       <FormControl
         type="text"
         placeholder="Search"
         className=" mr-sm-2"
         isInvalid={isInvalid}
         onChange={handleChange}
+        data-testid="search-field"
       />
-      <Button type="submit">Search</Button>
+      <Button data-testid="search" type="submit">
+        Search
+      </Button>
     </Form>
   );
 };
